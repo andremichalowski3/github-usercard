@@ -28,7 +28,7 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+// const followersArray = [];
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -58,3 +58,15 @@ const followersArray = [];
     luishrd
     bigknell
 */
+import axios from "axios";
+
+axios
+  .get("https://api.github.com/users/andremichalowski")
+  .then((response) => {
+    console.log(response.data);
+    // const gitData = response.data;
+    // cards.appendChild(createCard(gitData));
+  })
+  .catch((err) => {
+    console.log("Error:", err);
+  });
