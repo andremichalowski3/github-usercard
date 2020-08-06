@@ -60,6 +60,7 @@
 */
 import axios from "axios";
 
+//PART 1: AXIOS CALL
 axios
   .get("https://api.github.com/users/andremichalowski")
   .then((response) => {
@@ -71,6 +72,7 @@ axios
     console.log("Error:", err);
   });
 
+//PART 2: CARD FUNCTION
 const cards = document.querySelector(".cards");
 
 ///construct mark class content append return
@@ -116,3 +118,24 @@ function createCard(obj) {
 
   return card;
 }
+
+const instructors = [
+  "tetondan",
+  "dustinmyers",
+  "justsml",
+  "luishrd",
+  "bigknell",
+];
+
+//PART 3: ITERATOR
+instructors.forEach((user) => {
+  axios
+    .get(`https://api.github.com/users/${user}`)
+    .then((res) => {
+      const gitData = res.data;
+      cards.appendChild(createCard(gitData));
+    })
+    .catch((err) => {
+      console.log("Error!:", err);
+    });
+});
