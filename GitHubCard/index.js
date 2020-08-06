@@ -28,7 +28,7 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+// const followersArray = [];
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -58,3 +58,84 @@ const followersArray = [];
     luishrd
     bigknell
 */
+import axios from "axios";
+
+//PART 1: AXIOS CALL
+axios
+  .get("https://api.github.com/users/andremichalowski")
+  .then((response) => {
+    console.log(response.data);
+    const gitData = response.data;
+    cards.appendChild(createCard(gitData));
+  })
+  .catch((err) => {
+    console.log("Error:", err);
+  });
+
+//PART 2: CARD FUNCTION
+const cards = document.querySelector(".cards");
+
+///construct mark class content append return
+function createCard(obj) {
+  const card = document.createElement("div");
+  card.className = "card";
+  const userImg = document.createElement("img");
+  userImg.setAttribute("src", obj.avatar_url);
+  const cardInfo = document.createElement("div");
+  cardInfo.className = "card-info";
+  const name = document.createElement("h3");
+  name.className = "name";
+  name.textContent = obj.name;
+  const userName = document.createElement("p");
+  userName.className = "username";
+  userName.textContent = obj.login;
+  const location = document.createElement("p");
+  location.textContent = obj.location;
+  const profile = document.createElement("p");
+  profile.textContent = "Profile: ";
+  const profileAddress = document.createElement("a");
+  profileAddress.textContent = obj.html_url;
+  profileAddress.setAttribute("href", obj.html_url);
+  const followers = document.createElement("p");
+  followers.textContent = `Followers: ${obj.followers}`;
+  const following = document.createElement("p");
+  following.textContent = `Following: ${obj.following}`;
+  const bio = document.createElement("p");
+  bio.textContent = `Bio: ${obj.bio}`;
+
+  card.appendChild(userImg);
+  card.appendChild(cardInfo);
+
+  cardInfo.appendChild(name);
+  cardInfo.appendChild(userName);
+  cardInfo.appendChild(location);
+  cardInfo.appendChild(profile);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(following);
+  cardInfo.appendChild(bio);
+
+  profile.appendChild(profileAddress);
+
+  return card;
+}
+
+const instructors = [
+  "tetondan",
+  "dustinmyers",
+  "justsml",
+  "luishrd",
+  "bigknell",
+];
+
+//PART 3: ITERATOR
+instructors.forEach((user) => {
+  axios
+    .get(`https://api.github.com/users/${user}`)
+    .then((res) => {
+      const gitData = res.data;
+      cards.appendChild(createCard(gitData));
+    })
+    .catch((err) => {
+      console.log("Error!:", err);
+    });
+});
